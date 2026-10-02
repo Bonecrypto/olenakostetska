@@ -126,8 +126,16 @@ const DATA={
 const CONFIG = {
   instagramUrl: "https://instagram.com/alyonochka_22",
   instagramHandle: "@alyonochka_22",
-  heroPhoto: "/hero.jpg",
-  aboutPhoto: "/about.jpg",
+  heroPhoto: "/stage-trophy.jpg",
+  aboutPhoto: "/stage-portrait.jpg",
+  // Галерея в секції «Досягнення» (гортається вбік). Підпис — назва турніру.
+  gallery: [
+    { src: "/champion.jpg", cap: "European Festival · NPC Poland" },
+    { src: "/podium.jpg", cap: "NPC Poland Championships" },
+    { src: "/flex-medal.jpg", cap: "Flex Weekend · Milano" },
+    { src: "/hero.jpg", cap: "Flex Weekend Pro Qualifier" },
+    { src: "/about.jpg", cap: "Flex Weekend · Fit Model" },
+  ],
 };
 
 // ───────────────────────── 2. СТИЛІ ─────────────────────────
@@ -203,7 +211,7 @@ h1.hero-title i{font-style:italic;font-weight:500;color:var(--accent)}
 .marquee b{color:var(--accent-2);margin:0 6px}
 @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-section.block{padding:110px 0;position:relative}
+section.block{padding-top:110px;padding-bottom:110px;position:relative}
 .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:8px}
 .sec-num{display:none}
 .sec-eyebrow{font-size:15px;font-weight:600;color:var(--accent);margin-bottom:14px}
@@ -236,6 +244,13 @@ section.block{padding:110px 0;position:relative}
 .title-chip{display:flex;align-items:center;gap:14px;background:var(--white);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
 .title-chip .ic{font-size:22px;flex-shrink:0}
 .title-chip span{font-weight:500;font-size:15px;color:var(--ink);line-height:1.35}
+
+/* GALLERY */
+.gallery{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 0 52px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.gallery::-webkit-scrollbar{display:none}
+.gallery figure{flex:0 0 auto;scroll-snap-align:start;position:relative;height:420px;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(26,21,35,.12);background:var(--line)}
+.gallery img{height:100%;width:auto;display:block}
+.gallery figcaption{position:absolute;left:12px;bottom:12px;right:12px;width:fit-content;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);color:var(--ink);font-size:13px;font-weight:600;padding:7px 12px;border-radius:10px}
 
 /* PROCESS */
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px}
@@ -353,6 +368,17 @@ footer{padding:70px 0 max(44px,calc(env(safe-area-inset-bottom) + 20px));border-
   .tl-row{grid-template-columns:60px 1fr;gap:16px}
   .tl-year{font-size:21px}
   .sec-title{max-width:none}
+  section.block{padding-top:80px;padding-bottom:80px}
+  .gallery{margin-right:-24px;padding-right:24px}
+  .gallery figure{height:360px;max-width:calc(100vw - 64px)}
+  .gallery img{object-fit:cover;max-width:100%}
+  }
+@media(max-width:520px){
+  .wrap{padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
+  .gallery{margin-right:-20px;padding-right:20px}
+  .cta-band{margin:0 16px;padding:56px 24px}
+  .card,.inc{padding:26px 22px}
+  .results{padding:28px 22px}
   }
 
 
@@ -500,7 +526,7 @@ export default function App() {
 
       <section className="block wrap" id="about">
         <div className="about">
-          <div className="frame"><img src={CONFIG.aboutPhoto} alt="Olena Kostetska" /></div>
+          <div className="frame"><img src={CONFIG.aboutPhoto} alt="Olena Kostetska" loading="lazy" /></div>
           <div>
             <div className="sec-eyebrow">{d.aboutEye}</div>
             <Rich as="h2" className="sec-title" html={d.aboutTitle} />
@@ -521,6 +547,11 @@ export default function App() {
           <div className="sec-head"><div className="sec-eyebrow" style={{ margin: 0 }}>{d.achEye}</div></div>
           <Rich as="h2" className="sec-title" html={d.achTitle} />
           <p className="ach-intro">{d.achIntro}</p>
+          <div className="gallery">
+            {CONFIG.gallery.map((g, i) => (
+              <figure key={i}><img src={g.src} alt={`Olena Kostetska — ${g.cap}`} loading="lazy" /><figcaption>{g.cap}</figcaption></figure>
+            ))}
+          </div>
           <div className="titles">
             {d.titles.map((t, i) => (
               <div className="title-chip" key={i}><span className="ic">{t.i}</span><span>{t.t}</span></div>
